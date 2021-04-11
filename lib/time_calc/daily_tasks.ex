@@ -20,18 +20,29 @@ defmodule TimeCalc.DailyTasks do
     [start_time, details]
   end
 
-  defp offset_task_dtos(task_dtos), do: Enum.zip(task_dtos, Enum.drop(task_dtos, 1))
+  def make_task({task_partial, end_time}) do
+    [start_time, details | []] = task_partial
+    %TimeCalc.Task{start: start_time, end: end_time, name: details}
+  end
 
   def make_tasks(date, {"p", [], [tasks_text], _}) do
     task_partial_pieces = tasks_text
     |> String.split("\n")
     |> Enum.map(fn task_line -> make_task_partial_pieces(date, task_line) end)
-    IO.inspect task_partial_pieces
+
+    raw_end_times = task_partial_pieces
+                    |> Enum.map(&List.first/1)
+                    |> Enum.drop(1)
+    duplicate_end_time = task_partial_pieces
+                         |> List.last
+                         |> List.first
+    end_times = raw_end_times ++ [duplicate_end_time]
+    Enum.map(Enum.zip(task_partial_pieces, end_times), &make_task/1)
   end
 
   def make([date_ast, task_asts]) do
     date = make_date(date_ast)
-    tasks = make_tasks(date, task_asts)
+    make_tasks(date, task_asts)
   end
 
 end
