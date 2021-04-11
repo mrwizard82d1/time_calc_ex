@@ -53,13 +53,13 @@ defmodule TimeCalc.DailyTasks do
     Map.merge(so_far, task, &merge_task_durations/3)
   end
 
-  def summarize_one_day({date, tasks}, so_far) do
+  def summarize_one_day({date, tasks}) do
     day_summary = tasks
                   |> Enum.map(fn task -> %{task.name => TimeCalc.Task.duration(task)} end)
                   |> Enum.reduce(%{}, &accumulate_task_duration/2)
-    Map.merge(so_far, %{date => day_summary})
+    {date, day_summary}
   end
 
-  def summarize(tasks), do: Enum.reduce(tasks, %{}, &summarize_one_day/2)
+  def summarize(tasks), do: Enum.map(tasks, &summarize_one_day/1)
 
 end

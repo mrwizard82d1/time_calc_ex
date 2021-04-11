@@ -32,6 +32,33 @@ defmodule TimeCalc.Cli do
 
   def make_days_ast(ast), do: Enum.chunk_every(ast, 2)
 
+  def present_task_date(date) do
+    case Timex.format(date, "{YYYY}-{0M}-{0D} {h24}-{m}-{s}") do
+      {:ok, date_text} ->
+        IO.puts "\n# #{date_text}\n"
+      {:error, error} -> IO.inspect error
+    end
+  end
+
+  def present_task_summary(task_summary) do
+    case task_summary do
+      {name, 0} -> nil
+      {name, duration} ->
+        :io.format("~16s: ~.2f~n", [name, duration / 3600])
+    end
+  end
+
+  def present_tasks_summary(summary) do
+    summary
+    |> Enum.sort
+    |> Enum.each(&present_task_summary/1)
+  end
+
+  def present_daily_summary({date, summary}) do
+    present_task_date(date)
+    present_tasks_summary(summary)
+  end
+
   def run(argv) do
     parse_args(argv)
     |> read_tasks_text
@@ -39,5 +66,7 @@ defmodule TimeCalc.Cli do
     |> make_days_ast
     |> Enum.map(&TimeCalc.DailyTasks.make/1)
     |> Enum.map(&TimeCalc.DailyTasks.summarize/1)
+    |> List.flatten
+    |> Enum.each(&present_daily_summary/1)
   end
 end
