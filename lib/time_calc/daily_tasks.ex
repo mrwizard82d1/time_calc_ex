@@ -45,4 +45,24 @@ defmodule TimeCalc.DailyTasks do
     make_tasks(date, task_asts)
   end
 
+  def merge_task_durations(_name, left_duration, right_duration) do
+    IO.inspect "merge_task_durations"
+    IO.inspect left_duration
+    IO.inspect right_duration
+    left_duration + right_duration
+  end
+
+  def accumulate_task_duration(so_far, task) do
+    IO.inspect "accumulate_task_duration"
+    IO.inspect so_far
+    IO.inspect task
+    Map.merge(so_far, task, &merge_task_durations/3)
+  end
+
+  def summarize(tasks) do
+    tasks
+    |> Enum.map(fn task -> %{task.name => TimeCalc.Task.duration(task)} end)
+    |> Enum.reduce(%{}, &accumulate_task_duration/2)
+  end
+
 end

@@ -5,4 +5,6 @@ defmodule TimeCalc.Task do
 
   defstruct [:start, :end, :name]
 
+  def duration(task), do: NaiveDateTime.diff(task.end, task.start)
+
 end

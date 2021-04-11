@@ -38,5 +38,6 @@ defmodule TimeCalc.Cli do
     |> parse_tasks_text
     |> make_days_ast
     |> Enum.map(&TimeCalc.DailyTasks.make/1)
+    |> Enum.map(&TimeCalc.DailyTasks.summarize/1)
   end
 end
