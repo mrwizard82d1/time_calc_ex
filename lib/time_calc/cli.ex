@@ -33,10 +33,11 @@ defmodule TimeCalc.Cli do
   def make_days_ast(ast), do: Enum.chunk_every(ast, 2)
 
   def format_date_time(date) do
-    {:ok, "2021-04-12 00:02:00.000000"}
+    {:ok, NaiveDateTime.to_string(date)}
   end
 
   def present_task_date(date) do
+    format_date_time(date)
     case format_date_time(date) do
       {:ok, date_text} ->
         IO.puts "\n# #{date_text}\n"
