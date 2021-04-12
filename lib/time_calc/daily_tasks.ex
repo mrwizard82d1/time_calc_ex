@@ -4,7 +4,27 @@ defmodule TimeCalc.DailyTasks do
   """
 
   def parse_date_text(date_text) do
-    NaiveDateTime.new(0, 4, 11, 0, 0, 0)
+    [day_of_month_text, short_month] = String.split(date_text, "-")
+    day_of_month = String.to_integer(day_of_month_text)
+    month = case short_month do
+      "Jan" -> 1
+      "Feb" -> 2
+      "Mar" -> 3
+      "Apr" -> 4
+      "May" -> 5
+      "Jun" -> 6
+      "Jul" -> 7
+      "Aug" -> 8
+      "Sep" -> 9
+      "Oct" -> 10
+      "Nov" -> 11
+      "Dec" -> 12
+      _ -> {:error, "Unrecognized short month, '#{short_month}'."}
+    end
+    case month do
+      {:error, reason} -> {:error, reason}
+      _ -> NaiveDateTime.new(NaiveDateTime.local_now().year, month, day_of_month, 0, 0, 0)
+    end
   end
 
   def make_date({"h1", [], [date_text], _}) do

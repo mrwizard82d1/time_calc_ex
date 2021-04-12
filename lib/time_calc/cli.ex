@@ -24,7 +24,7 @@ defmodule TimeCalc.Cli do
       {:ok, ast, deprecation_messages} ->
         present_deprecation_messages deprecation_messages
         ast
-      {:error, ast, error_messages} ->
+      {:error, _ast, error_messages} ->
         present_error_messages error_messages
         raise "Error parsing daily tasks"
     end
@@ -46,7 +46,7 @@ defmodule TimeCalc.Cli do
 
   def present_task_summary(task_summary) do
     case task_summary do
-      {name, 0} -> nil
+      {_name, 0} -> nil
       {name, duration} ->
         :io.format("~16s: ~.2f~n", [name, duration / 3600])
     end
