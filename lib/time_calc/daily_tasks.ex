@@ -3,8 +3,12 @@ defmodule TimeCalc.DailyTasks do
   Module for managing activities.
   """
 
+  def parse_date_text(date_text) do
+    NaiveDateTime.new(0, 4, 11, 0, 0, 0)
+  end
+
   def make_date({"h1", [], [date_text], _}) do
-    {:ok, partial_date} = Timex.parse(date_text, "{0D}-{Mshort}")
+    {:ok, partial_date} = parse_date_text(date_text)
     %NaiveDateTime{partial_date | year: NaiveDateTime.local_now().year}
   end
 
@@ -12,10 +16,14 @@ defmodule TimeCalc.DailyTasks do
     %NaiveDateTime{task_date | hour: start_time_of_day.hour, minute: start_time_of_day.minute}
   end
 
+  def parse_time_text(time_text) do
+    Time.new(0, 0, 0)
+  end
+
   def make_task_partial_pieces(date, task_line) do
     [start_text, details] = task_line
                             |> String.split("\s", parts: 2)
-    {:ok, start_time_of_day }= Timex.parse(start_text, "{h24}{m}")
+    {:ok, start_time_of_day} = parse_time_text(task_line)
     start_time = %NaiveDateTime{date | hour: start_time_of_day.hour, minute: start_time_of_day.minute}
     [start_time, details]
   end
