@@ -63,7 +63,7 @@ defmodule TimeCalc.Cli do
     present_tasks_summary(summary)
   end
 
-  def run(argv) do
+  def main(argv) do
     parse_args(argv)
     |> read_tasks_text
     |> parse_tasks_text

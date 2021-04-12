@@ -7,6 +7,7 @@ defmodule TimeCalc.MixProject do
       version: "0.1.0",
       elixir: "~> 1.11",
       start_permanent: Mix.env() == :prod,
+      escript: escript_config(),
       deps: deps()
     ]
   end
@@ -26,4 +27,9 @@ defmodule TimeCalc.MixProject do
       {:earmark_parser, "~> 1.4"},
     ]
   end
+
+  defp escript_config do
+    [main_module: TimeCalc.Cli]
+  end
+
 end
