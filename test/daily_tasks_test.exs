@@ -24,14 +24,10 @@ defmodule DailyTasksTest do
   end
 
     test "parse date text when date invalid" do
-    year = NaiveDateTime.local_now().year
+      year = NaiveDateTime.local_now().year
       assert TimeCalc.DailyTasks.parse_date_text("05-Mat") == {:error, "Unrecognized short month, 'Mat'."}
-      # assert TimeCalc.DailyTasks.parse_date_text("00-Aug") == NaiveDateTime.new!(year, 8, 0, 0, 0, 0)
-#      assert TimeCalc.DailyTasks.parse_date_text("01-Dec") == {:ok, NaiveDateTime.new!(year, 12, 1, 0, 0, 0)}
-#
-#      assert TimeCalc.DailyTasks.parse_date_text("28-Feb") == {:ok, NaiveDateTime.new!(year, 2, 28, 0, 0, 0)}
-#      assert TimeCalc.DailyTasks.parse_date_text("31-Jul") == {:ok, NaiveDateTime.new!(year, 7, 31, 0, 0, 0)}
-#      assert TimeCalc.DailyTasks.parse_date_text("31-Dec") == {:ok, NaiveDateTime.new!(year, 12, 31, 0, 0, 0)}
+      assert TimeCalc.DailyTasks.parse_date_text("00-Aug") == NaiveDateTime.new(year, 8, 0, 0, 0, 0)
+      assert TimeCalc.DailyTasks.parse_date_text("31-Mar") == NaiveDateTime.new(year, 3, 31, 0, 0, 0)
     end
 
 end
