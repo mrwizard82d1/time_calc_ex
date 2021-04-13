@@ -30,7 +30,7 @@ defmodule TimeCalc.DateTimeParser do
         end
         case month do
           {:error, reason} -> {:error, reason}
-          _ -> NaiveDateTime.new(NaiveDateTime.local_now().year, month, day_of_month, 0, 0, 0)
+          _ -> Date.new(NaiveDateTime.local_now().year, month, day_of_month)
         end
       true -> {:error, "Date must have exactly 6 characters but was '#{date_text}'"}
     end
@@ -44,17 +44,18 @@ defmodule TimeCalc.DateTimeParser do
         candidate_hour = String.to_integer(hour_text)
         cond do
           0 <= candidate_hour and candidate_hour <= 24 ->
-            hour = rem(candidate_hour, 24)
-            day_of_month = cond do
-              candidate_hour == 24 -> 2
-              true -> 1
+            is_midnight = if candidate_hour == 24 do
+              true
+            else
+              false
             end
+            hour = rem(candidate_hour, 24)
             minute_text = String.slice(time_text, 2..3)
             candidate_minute = String.to_integer(minute_text)
             cond do
               0 <= candidate_minute and candidate_minute <= 59 ->
                 minute = candidate_minute
-                NaiveDateTime.new(0, 1, day_of_month, hour, minute, 0)
+                %TimeCalc.DateTimeParser.ParsedTime{time: Time.new!(hour, minute, 0), is_midnight: is_midnight}
               true -> {:error, "Minute must be between 0 and 59, inclusive, but was '#{minute_text}'"}
             end
           true -> {:error, "Hour must be between 0 and 24, inclusive, but was '#{hour_text}'"}
