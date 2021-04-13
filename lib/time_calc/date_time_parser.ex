@@ -55,7 +55,7 @@ defmodule TimeCalc.DateTimeParser do
             cond do
               0 <= candidate_minute and candidate_minute <= 59 ->
                 minute = candidate_minute
-                %TimeCalc.DateTimeParser.ParsedTime{time: Time.new!(hour, minute, 0), is_midnight: is_midnight}
+                {:ok, %TimeCalc.DateTimeParser.ParsedTime{time: Time.new!(hour, minute, 0), is_midnight: is_midnight}}
               true -> {:error, "Minute must be between 0 and 59, inclusive, but was '#{minute_text}'"}
             end
           true -> {:error, "Hour must be between 0 and 24, inclusive, but was '#{hour_text}'"}

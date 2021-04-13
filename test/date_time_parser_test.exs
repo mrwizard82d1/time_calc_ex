@@ -20,13 +20,13 @@ defmodule DateTimeParserTest do
   end
 
   test "parse time text when time valid" do
-    assert {:ok, TimeCalc.DateTimeParser.parse_time_text("0000")} ==
+    assert TimeCalc.DateTimeParser.parse_time_text("0000") ==
              {:ok, %TimeCalc.DateTimeParser.ParsedTime{time: Time.new!(0, 0, 0)}}
-    assert {:ok, TimeCalc.DateTimeParser.parse_time_text("2217")} ==
+    assert TimeCalc.DateTimeParser.parse_time_text("2217") ==
              {:ok, %TimeCalc.DateTimeParser.ParsedTime{time: Time.new!(22, 17, 0)}}
-    assert {:ok, TimeCalc.DateTimeParser.parse_time_text("0859")} ==
+    assert TimeCalc.DateTimeParser.parse_time_text("0859") ==
              {:ok, %TimeCalc.DateTimeParser.ParsedTime{time: Time.new!(8, 59, 0)}}
-    assert {:ok, TimeCalc.DateTimeParser.parse_time_text("2400") }==
+    assert TimeCalc.DateTimeParser.parse_time_text("2400") ==
              {:ok, %TimeCalc.DateTimeParser.ParsedTime{time: Time.new!(0, 0, 0), is_midnight: true}}
   end
 
