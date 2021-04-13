@@ -15,8 +15,14 @@ defmodule TimeCalc.DailyTasks do
   def make_task_partial_pieces(date, task_line) do
     [start_text, details] = task_line
                             |> String.split("\s", parts: 2)
-    {:ok, start_time_of_day} = TimeCalc.DateTimeParser.parse_time_text(start_text)
-    start_time = %NaiveDateTime{date | hour: start_time_of_day.hour, minute: start_time_of_day.minute}
+    {:ok, parsed_start_time_of_day} = TimeCalc.DateTimeParser.parse_time_text(start_text)
+    start_time = case parsed_start_time_of_day do
+      %TimeCalc.DateTimeParser.ParsedTime{time: start_time_of_day, is_midnight: false} ->
+        NaiveDateTime.new!(date, start_time_of_day)
+      %TimeCalc.DateTimeParser.ParsedTime{time: start_time_of_day, is_midnight: true} ->
+        adjusted_date = Date.add(date, 1)
+        NaiveDateTime.new!(adjusted_date, start_time_of_day)
+    end
     [start_time, details]
   end
 
