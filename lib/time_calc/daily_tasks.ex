@@ -5,7 +5,7 @@ defmodule TimeCalc.DailyTasks do
 
   def make_date({"h1", [], [date_text], _}) do
     {:ok, partial_date} = TimeCalc.DateTimeParser.parse_date_text(date_text)
-    %NaiveDateTime{partial_date | year: NaiveDateTime.local_now().year}
+    %Date{partial_date | year: NaiveDateTime.local_now().year}
   end
 
   def make_start_time(start_time_of_day, task_date) do
