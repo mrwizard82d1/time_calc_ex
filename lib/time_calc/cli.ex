@@ -33,7 +33,7 @@ defmodule TimeCalc.Cli do
   def make_days_ast(ast), do: Enum.chunk_every(ast, 2)
 
   def format_date_time(date) do
-    {:ok, NaiveDateTime.to_string(date)}
+    {:ok, Date.to_string(date)}
   end
 
   def present_task_date(date) do
